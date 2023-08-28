@@ -35,10 +35,12 @@ export default function AuthSignInBox() {
         const role = response.data.data.employee.role;
 
         // 쿠키 생성
-        document.cookie = `accessToken=${accessToken};`;
-        document.cookie = `expires=${expireDate.toUTCString()};`;
-        document.cookie = `employeeId=${employeeId};`;
-        document.cookie = `role=${role};`;
+        // secure: 패킷 감청을 막기 위해 https 통신 시에만 해당 쿠키를 사용
+        // SameSite = strict;  같은 도메인 범위에서만 해당 쿠키를 사용
+        document.cookie = `accessToken=${accessToken}; path=/; secure; SameSite=strict;`;
+        document.cookie = `expires=${expireDate.toUTCString()}; path=/; secure; SameSite=strict;`;
+        document.cookie = `employeeId=${employeeId}; path=/; secure; SameSite=strict;`;
+        document.cookie = `role=${role}; path=/; secure; SameSite=strict;`;
 
         // 관리자면 admin-manage 페이지로 라우팅
         if (response.data.data.employee.role === 'ADMIN') {
